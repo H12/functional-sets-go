@@ -57,13 +57,15 @@ func TestUnion(t *testing.T) {
 		{
 			Name: "union contains all values of two provided sets",
 
-			Set1: SingletonSet(1),
-			Set2: SingletonSet(2),
+			Set1: setFromInts(1, 2),
+			Set2: setFromInts(4, 5),
 
 			ResultMap: map[int]bool{
 				1: true,
 				2: true,
 				3: false,
+				4: true,
+				5: true,
 			},
 		},
 	}
@@ -98,8 +100,8 @@ func TestIntersect(t *testing.T) {
 		{
 			Name: "intersect contains only element shared between two sets",
 
-			Set1: func(i int) bool { return i >= 1 && i <= 3 }, // set of 1, 2, and 3
-			Set2: func(i int) bool { return i >= 3 && i <= 5 }, // set of 3, 4, and 5
+			Set1: setFromInts(1, 2, 3),
+			Set2: setFromInts(3, 4, 5),
 
 			ResultMap: map[int]bool{
 				1: false,
@@ -139,3 +141,15 @@ func TestIntersect(t *testing.T) {
 // TestExists
 
 // TestMap
+
+func setFromInts(ints ...int) Set {
+	return func(v int) bool {
+		for _, i := range ints {
+			if i == v {
+				return true
+			}
+		}
+
+		return false
+	}
+}
