@@ -41,7 +41,9 @@ func Diff(set1, set2 Set) Set {
 
 // Returns the subset of `set` for which `predicateFunc` holds.
 func Filter(set Set, predicateFunc func(i int) bool) Set {
-	panic("Implement Filter")
+	return func(i int) bool {
+		return predicateFunc(i) && set(i)
+	}
 }
 
 // The bounds for `ForAll` and `Exists` are +/- 1000.
