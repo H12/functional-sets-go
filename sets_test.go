@@ -52,26 +52,19 @@ func TestUnion(t *testing.T) {
 		Set1 Set
 		Set2 Set
 
-		InputValues    []int
-		ExpectedResult bool
+		ResultMap map[int]bool
 	}{
 		{
-			Name: "union contains both values of two singleton sets",
+			Name: "union contains all values of two provided sets",
 
 			Set1: SingletonSet(1),
 			Set2: SingletonSet(2),
 
-			InputValues:    []int{1, 2},
-			ExpectedResult: true,
-		},
-		{
-			Name: "union does not contain value that is in neither of two singleton sets",
-
-			Set1: SingletonSet(1),
-			Set2: SingletonSet(2),
-
-			InputValues:    []int{3},
-			ExpectedResult: false,
+			ResultMap: map[int]bool{
+				1: true,
+				2: true,
+				3: false,
+			},
 		},
 	}
 
@@ -79,12 +72,12 @@ func TestUnion(t *testing.T) {
 		t.Run(entry.Name, func(t *testing.T) {
 			set := Union(entry.Set1, entry.Set2)
 
-			for _, v := range entry.InputValues {
-				result := set(v)
-				if result != entry.ExpectedResult {
+			for inputValue, expectedResult := range entry.ResultMap {
+				result := set(inputValue)
+				if result != expectedResult {
 					t.Errorf("Expected set(%+v) to be %+v, but got %+v",
-						v,
-						entry.ExpectedResult,
+						inputValue,
+						expectedResult,
 						result,
 					)
 				}
