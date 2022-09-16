@@ -120,7 +120,6 @@ func TestDiff(t *testing.T) {
 
 func TestFilter(t *testing.T) {
 	t.Run("filtered set includes only values for which the predicate returns true", func(t *testing.T) {
-		isEven := func(i int) bool { return i%2 == 0 }
 		inputSet := setFromInts(1, 2, 3, 4, 5, 6, 7, 8)
 
 		set := Filter(inputSet, isEven)
@@ -149,11 +148,74 @@ func TestFilter(t *testing.T) {
 	})
 }
 
-// TestForAll
+func TestForAll(t *testing.T) {
+	bigSlice := make([]int, BOUND, BOUND)
+	for i := range bigSlice {
+		bigSlice[i] = i + 1
+	}
+
+	tests := []struct {
+		Name string
+
+		InputSet      Set
+		PredicateFunc func(i int) bool
+
+		ExpectedResult bool
+	}{
+		{
+			Name: "returns true when predicate holds for all values in the set",
+
+			InputSet:      setFromInts(2, 4, 6, 8, 10),
+			PredicateFunc: isEven,
+
+			ExpectedResult: true,
+		},
+		{
+			Name: "returns false when predicate does not hold for all values in the set",
+
+			InputSet:      setFromInts(1, 2, 3, 4, 5),
+			PredicateFunc: isEven,
+
+			ExpectedResult: false,
+		},
+		{
+			Name: "returns false for an empty set",
+
+			InputSet:      func(i int) bool { return false },
+			PredicateFunc: func(i int) bool { return true },
+
+			ExpectedResult: false,
+		},
+		{
+			Name: "works for a set of all bounded integers",
+
+			InputSet:      setFromInts(bigSlice...),
+			PredicateFunc: func(i int) bool { return true },
+
+			ExpectedResult: true,
+		},
+	}
+
+	for _, entry := range tests {
+		t.Run(entry.Name, func(t *testing.T) {
+			result := ForAll(entry.InputSet, entry.PredicateFunc)
+			if result != entry.ExpectedResult {
+				t.Errorf("Expected ForAll to return %+v for the provided set and predicate, but got %+v",
+					entry.ExpectedResult,
+					result,
+				)
+			}
+		})
+	}
+}
 
 // TestExists
 
 // TestMap
+
+func isEven(i int) bool {
+	return i%2 == 0
+}
 
 func setFromInts(ints ...int) Set {
 	return func(v int) bool {
