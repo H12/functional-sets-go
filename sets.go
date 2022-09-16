@@ -51,7 +51,24 @@ var BOUND = 1000
 
 // Returns whether all bounded integers within `set` satisfy `predicateFunc`.
 func ForAll(set Set, predicateFunc func(i int) bool) bool {
-	panic("Implement ForAll")
+	result := false
+
+	for i := 1; i <= BOUND; i++ {
+		// Skip if bounded integer is not in the set
+		if !set(i) {
+			continue
+		}
+
+		// Return false early if predicate fails for integer within set
+		if !predicateFunc(i) {
+			return false
+		}
+
+		// If set is empty we never get here and result stays false
+		result = true
+	}
+
+	return result
 }
 
 // Returns whether there exists a bounded integer within `set` that satisfies
