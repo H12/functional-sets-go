@@ -93,7 +93,49 @@ func TestUnion(t *testing.T) {
 	}
 }
 
-// TestIntersect
+func TestIntersect(t *testing.T) {
+	tests := []struct {
+		Name string
+
+		Set1 Set
+		Set2 Set
+
+		ResultMap map[int]bool
+	}{
+		{
+			Name: "intersect contains only element shared between two sets",
+
+			Set1: func(i int) bool { return i >= 1 && i <= 3 }, // set of 1, 2, and 3
+			Set2: func(i int) bool { return i >= 3 && i <= 5 }, // set of 3, 4, and 5
+
+			ResultMap: map[int]bool{
+				1: false,
+				2: false,
+				3: true,
+				4: false,
+				5: false,
+				6: false, // a value contained in neither set, for good measure
+			},
+		},
+	}
+
+	for _, entry := range tests {
+		t.Run(entry.Name, func(t *testing.T) {
+			set := Intersect(entry.Set1, entry.Set2)
+
+			for inputValue, expectedResult := range entry.ResultMap {
+				result := set(inputValue)
+				if result != expectedResult {
+					t.Errorf("Expected set (%+v) to be %+v, but got %+v",
+						inputValue,
+						expectedResult,
+						result,
+					)
+				}
+			}
+		})
+	}
+}
 
 // TestDiff
 
