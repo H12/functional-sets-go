@@ -24,7 +24,9 @@ func Union(set1, set2 Set) Set {
 // Returns the intersection of the two given sets, the set of all elements that
 // are both in `set1` and `set2`.
 func Intersect(set1, set2 Set) Set {
-	panic("Implement Intersect")
+	return func(i int) bool {
+		return set1(i) && set2(i)
+	}
 }
 
 // Returns the difference of the two given sets, the set of all elements of
