@@ -32,7 +32,11 @@ func Intersect(set1, set2 Set) Set {
 // Returns the difference of the two given sets, the set of all elements of
 // `set1` that are not in `set2`.
 func Diff(set1, set2 Set) Set {
-	panic("Implement Diff")
+	union := Union(set1, set2)
+
+	return func(i int) bool {
+		return !union(i)
+	}
 }
 
 // Returns the subset of `set` for which `predicateFunc` holds.
