@@ -132,7 +132,48 @@ func TestIntersect(t *testing.T) {
 	}
 }
 
-// TestDiff
+func TestDiff(t *testing.T) {
+	tests := []struct {
+		Name string
+
+		Set1 Set
+		Set2 Set
+
+		ResultMap map[int]bool
+	}{
+		{
+			Name: "intersect includes only values not in provided sets",
+
+			Set1: setFromInts(1, 2),
+			Set2: setFromInts(4, 5),
+
+			ResultMap: map[int]bool{
+				1: false,
+				2: false,
+				3: true,
+				4: false,
+				5: false,
+			},
+		},
+	}
+
+	for _, entry := range tests {
+		t.Run(entry.Name, func(t *testing.T) {
+			set := Diff(entry.Set1, entry.Set2)
+
+			for inputValue, expectedResult := range entry.ResultMap {
+				result := set(inputValue)
+				if result != expectedResult {
+					t.Errorf("Expected set(%+v) to be %+v, but got %+v",
+						inputValue,
+						expectedResult,
+						result,
+					)
+				}
+			}
+		})
+	}
+}
 
 // TestFilter
 
