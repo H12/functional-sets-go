@@ -16,7 +16,9 @@ func SingletonSet(i int) Set {
 // Union returns the union of the two given sets, the sets of all elements that
 // are in either `set1` or `set2`.
 func Union(set1, set2 Set) Set {
-	panic("Implement Union")
+	return func(i int) bool {
+		return set1(i) || set2(i)
+	}
 }
 
 // Returns the intersection of the two given sets, the set of all elements that
