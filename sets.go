@@ -8,7 +8,9 @@ type Set func(i int) bool
 
 // SingletonSet returns the set of the one given element.
 func SingletonSet(i int) Set {
-	panic("Implement SingletonSet")
+	return func(j int) bool {
+		return i == j
+	}
 }
 
 // Union returns the union of the two given sets, the sets of all elements that
