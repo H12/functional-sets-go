@@ -46,133 +46,76 @@ func TestSingletonSet(t *testing.T) {
 }
 
 func TestUnion(t *testing.T) {
-	tests := []struct {
-		Name string
+	t.Run("union contains all values of two provided sets", func(t *testing.T) {
+		set := Union(setFromInts(1, 2), setFromInts(4, 5))
+		resultMap := map[int]bool{
+			1: true,
+			2: true,
+			3: false,
+			4: true,
+			5: true,
+		}
 
-		Set1 Set
-		Set2 Set
-
-		ResultMap map[int]bool
-	}{
-		{
-			Name: "union contains all values of two provided sets",
-
-			Set1: setFromInts(1, 2),
-			Set2: setFromInts(4, 5),
-
-			ResultMap: map[int]bool{
-				1: true,
-				2: true,
-				3: false,
-				4: true,
-				5: true,
-			},
-		},
-	}
-
-	for _, entry := range tests {
-		t.Run(entry.Name, func(t *testing.T) {
-			set := Union(entry.Set1, entry.Set2)
-
-			for inputValue, expectedResult := range entry.ResultMap {
-				result := set(inputValue)
-				if result != expectedResult {
-					t.Errorf("Expected set(%+v) to be %+v, but got %+v",
-						inputValue,
-						expectedResult,
-						result,
-					)
-				}
+		for inputValue, expectedResult := range resultMap {
+			result := set(inputValue)
+			if result != expectedResult {
+				t.Errorf("Expected set(%+v) to be %+v, but got %+v",
+					inputValue,
+					expectedResult,
+					result,
+				)
 			}
-		})
-	}
+		}
+	})
 }
 
 func TestIntersect(t *testing.T) {
-	tests := []struct {
-		Name string
+	t.Run("intersect contains only element shared between two sets", func(t *testing.T) {
+		set := Intersect(setFromInts(1, 2, 3), setFromInts(3, 4, 5))
+		resultMap := map[int]bool{
+			1: false,
+			2: false,
+			3: true,
+			4: false,
+			5: false,
+			6: false, // a value contained in neither set, for good measure
+		}
 
-		Set1 Set
-		Set2 Set
-
-		ResultMap map[int]bool
-	}{
-		{
-			Name: "intersect contains only element shared between two sets",
-
-			Set1: setFromInts(1, 2, 3),
-			Set2: setFromInts(3, 4, 5),
-
-			ResultMap: map[int]bool{
-				1: false,
-				2: false,
-				3: true,
-				4: false,
-				5: false,
-				6: false, // a value contained in neither set, for good measure
-			},
-		},
-	}
-
-	for _, entry := range tests {
-		t.Run(entry.Name, func(t *testing.T) {
-			set := Intersect(entry.Set1, entry.Set2)
-
-			for inputValue, expectedResult := range entry.ResultMap {
-				result := set(inputValue)
-				if result != expectedResult {
-					t.Errorf("Expected set (%+v) to be %+v, but got %+v",
-						inputValue,
-						expectedResult,
-						result,
-					)
-				}
+		for inputValue, expectedResult := range resultMap {
+			result := set(inputValue)
+			if result != expectedResult {
+				t.Errorf("Expected set(%+v) to be %+v, but got %+v",
+					inputValue,
+					expectedResult,
+					result,
+				)
 			}
-		})
-	}
+		}
+	})
 }
 
 func TestDiff(t *testing.T) {
-	tests := []struct {
-		Name string
+	t.Run("intersect includes only values not in provided sets", func(t *testing.T) {
+		set := Diff(setFromInts(1, 2), setFromInts(4, 5))
+		resultMap := map[int]bool{
+			1: false,
+			2: false,
+			3: true,
+			4: false,
+			5: false,
+		}
 
-		Set1 Set
-		Set2 Set
-
-		ResultMap map[int]bool
-	}{
-		{
-			Name: "intersect includes only values not in provided sets",
-
-			Set1: setFromInts(1, 2),
-			Set2: setFromInts(4, 5),
-
-			ResultMap: map[int]bool{
-				1: false,
-				2: false,
-				3: true,
-				4: false,
-				5: false,
-			},
-		},
-	}
-
-	for _, entry := range tests {
-		t.Run(entry.Name, func(t *testing.T) {
-			set := Diff(entry.Set1, entry.Set2)
-
-			for inputValue, expectedResult := range entry.ResultMap {
-				result := set(inputValue)
-				if result != expectedResult {
-					t.Errorf("Expected set(%+v) to be %+v, but got %+v",
-						inputValue,
-						expectedResult,
-						result,
-					)
-				}
+		for inputValue, expectedResult := range resultMap {
+			result := set(inputValue)
+			if result != expectedResult {
+				t.Errorf("Expected set(%+v) to be %+v, but got %+v",
+					inputValue,
+					expectedResult,
+					result,
+				)
 			}
-		})
-	}
+		}
+	})
 }
 
 // TestFilter
