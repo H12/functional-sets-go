@@ -118,7 +118,36 @@ func TestDiff(t *testing.T) {
 	})
 }
 
-// TestFilter
+func TestFilter(t *testing.T) {
+	t.Run("filtered set includes only values for which the predicate returns true", func(t *testing.T) {
+		isEven := func(i int) bool { return i%2 == 0 }
+		inputSet := setFromInts(1, 2, 3, 4, 5, 6, 7, 8)
+
+		set := Filter(inputSet, isEven)
+		resultMap := map[int]bool{
+			1:  false,
+			2:  true,
+			3:  false,
+			4:  true,
+			5:  false,
+			6:  true,
+			7:  false,
+			8:  true,
+			10: false, // even number not included in original set should not be in filtered set
+		}
+
+		for inputValue, expectedResult := range resultMap {
+			result := set(inputValue)
+			if result != expectedResult {
+				t.Errorf("Expected set(%+v) to be %+v, but got %+v",
+					inputValue,
+					expectedResult,
+					result,
+				)
+			}
+		}
+	})
+}
 
 // TestForAll
 
