@@ -255,7 +255,39 @@ func TestExists(t *testing.T) {
 	}
 }
 
-// TestMap
+func TestMap(t *testing.T) {
+	t.Run("returned Set returns the appropriate results for the mapped and unmapped values", func(t *testing.T) {
+		inputSet := setFromInts(1, 2, 3, 4, 5)
+		doubleValue := func(i int) int {
+			return i * 2
+		}
+
+		set := Map(inputSet, doubleValue)
+		reusultMap := map[int]bool{
+			1:  false,
+			2:  true,
+			3:  false,
+			4:  true,
+			5:  false,
+			6:  true,
+			7:  false,
+			8:  true,
+			9:  false,
+			10: true,
+		}
+
+		for inputValue, expectedResult := range reusultMap {
+			result := set(inputValue)
+			if result != expectedResult {
+				t.Errorf("expected mapped set to return %+v for value %+v, but got %+v",
+					expectedResult,
+					inputValue,
+					result,
+				)
+			}
+		}
+	})
+}
 
 func isEven(i int) bool {
 	return i%2 == 0
