@@ -84,5 +84,18 @@ func Exists(set Set, predicateFunc func(i int) bool) bool {
 
 // Returns a set transformed by applying `fnc` to each element of `set`.
 func Map(set Set, fnc func(i int) int) Set {
-	panic("Implement Map")
+	var iterator func(i int, acc Set) Set
+	iterator = func(i int, acc Set) Set {
+		if i > BOUND {
+			return acc
+		} else if set(i) {
+			return iterator(i+1, Union(acc, func(j int) bool {
+				return j == fnc(i)
+			}))
+		} else {
+			return iterator(i+1, acc)
+		}
+	}
+
+	return iterator(1, func(i int) bool { return false })
 }
