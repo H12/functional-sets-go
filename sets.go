@@ -68,7 +68,18 @@ func ForAll(set Set, predicateFunc func(i int) bool) bool {
 // Returns whether there exists a bounded integer within `set` that satisfies
 // `predicateFunc`.
 func Exists(set Set, predicateFunc func(i int) bool) bool {
-	panic("Implement Exists")
+	var iterator func(i int) bool
+	iterator = func(i int) bool {
+		if i > BOUND {
+			return false
+		} else if set(i) && predicateFunc(i) {
+			return true
+		} else {
+			return iterator(i+1)
+		}
+	}
+
+	return iterator(1)
 }
 
 // Returns a set transformed by applying `fnc` to each element of `set`.
