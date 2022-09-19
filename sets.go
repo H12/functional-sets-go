@@ -46,7 +46,7 @@ func Filter(set Set, predicateFunc func(i int) bool) Set {
 	}
 }
 
-// The bounds for `ForAll` and `Exists` are +/- 1000.
+// The bounds for `ForAll` and `Exists` are +/- 10000.
 var BOUND = 10000
 
 // Returns whether all bounded integers within `set` satisfy `predicateFunc`.
@@ -58,7 +58,7 @@ func ForAll(set Set, predicateFunc func(i int) bool) bool {
 		} else if set(i) && !predicateFunc(i) {
 			return false
 		} else {
-			return iterator(i+1)
+			return iterator(i + 1)
 		}
 	}
 
@@ -75,7 +75,7 @@ func Exists(set Set, predicateFunc func(i int) bool) bool {
 		} else if set(i) && predicateFunc(i) {
 			return true
 		} else {
-			return iterator(i+1)
+			return iterator(i + 1)
 		}
 	}
 
