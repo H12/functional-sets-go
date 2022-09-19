@@ -62,7 +62,7 @@ func ForAll(set Set, predicateFunc func(i int) bool) bool {
 		}
 	}
 
-	return iterator(1)
+	return iterator(-10000)
 }
 
 // Returns whether there exists a bounded integer within `set` that satisfies
