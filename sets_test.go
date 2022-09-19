@@ -209,7 +209,51 @@ func TestForAll(t *testing.T) {
 	}
 }
 
-// TestExists
+func TestExists(t *testing.T) {
+	tests := []struct {
+		Name string
+
+		InputSet      Set
+		PredicateFunc func(i int) bool
+
+		ExpectedResult bool
+	}{
+		{
+			Name: "returns true when the predicate function holds for all entries in the set",
+
+			InputSet:      setFromInts(2, 4, 6),
+			PredicateFunc: isEven,
+
+			ExpectedResult: true,
+		},
+		{
+			Name: "returns true when the predicate function holds for some entries in the set",
+
+			InputSet:      setFromInts(1, 2, 3),
+			PredicateFunc: isEven,
+
+			ExpectedResult: true,
+		},
+		{
+			Name: "returns false when the predicate function holds for no entries in the set",
+
+			InputSet:      setFromInts(1, 3, 5),
+			PredicateFunc: isEven,
+
+			ExpectedResult: false,
+		},
+	}
+
+	for _, entry := range tests {
+		result := Exists(entry.InputSet, entry.PredicateFunc)
+		if result != entry.ExpectedResult {
+			t.Errorf("Expected Exists to return %+v for the provided set and predicate, but got %+v",
+				entry.ExpectedResult,
+				result,
+			)
+		}
+	}
+}
 
 // TestMap
 
