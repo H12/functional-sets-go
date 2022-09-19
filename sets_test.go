@@ -179,12 +179,12 @@ func TestForAll(t *testing.T) {
 			ExpectedResult: false,
 		},
 		{
-			Name: "returns false for an empty set",
+			Name: "returns true for an empty set",
 
 			InputSet:      func(i int) bool { return false },
 			PredicateFunc: func(i int) bool { return true },
 
-			ExpectedResult: false,
+			ExpectedResult: true,
 		},
 		{
 			Name: "works for a set of all bounded integers",
